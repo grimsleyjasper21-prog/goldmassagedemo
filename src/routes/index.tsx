@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
 import { CtaAnchor, CtaLink } from "@/components/site/Cta";
+import { InstallApp } from "@/components/site/InstallApp";
 import { LocationSection } from "@/components/site/LocationSection";
 import { categoryDesc, categoryLabel, useI18n } from "@/lib/i18n";
 import { BUSINESS, whatsappUrl } from "@/lib/business";
@@ -108,6 +109,7 @@ function Home() {
       <Categories />
       <Feature />
       <Gallery />
+      <AppBand />
       <AskBlock />
       <LocationSection />
       <FinalCta />
@@ -301,6 +303,26 @@ function Gallery() {
         </div>
         <p className="mt-8 max-w-xl text-xs leading-relaxed text-warmgrey">{t.gallery.note}</p>
       </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------ APP BAND */
+
+function AppBand() {
+  const { t } = useI18n();
+  return (
+    <section className="border-y border-border bg-charcoal px-5 py-20 text-ivory md:px-10 md:py-24">
+      <Reveal className="mx-auto flex max-w-[1600px] flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="eyebrow text-ivory/50">{t.pwa.installed ? "App" : "App"}</p>
+          <h2 className="display mt-4 text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95]">
+            {t.pwa.addTitle}
+          </h2>
+          <p className="mt-4 max-w-md text-base leading-relaxed text-ivory/70">{t.pwa.addLead}</p>
+        </div>
+        <InstallApp variant="button" tone="light" className="shrink-0" />
+      </Reveal>
     </section>
   );
 }

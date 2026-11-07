@@ -12,33 +12,44 @@ function isStandalone() {
   );
 }
 
-function isIosSafari() {
-  if (typeof navigator === "undefined") return false;
+type Platform = "ios" | "android" | "desktop";
+
+function detect(): Platform {
+  if (typeof navigator === "undefined") return "desktop";
   const ua = navigator.userAgent;
   const ios = /iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
-  return ios && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+  if (ios) return "ios";
+  if (/Android/.test(ua)) return "android";
+  return "desktop";
 }
 
 /**
- * Subtle install action. Uses the native Android/Chrome prompt when available
- * and a minimal instruction panel on iOS, where no automatic prompt exists.
+ * Install action.
+ *
+ * Always visible until the app is actually installed. Chrome and Edge get the
+ * native prompt; everything else gets the right manual instructions for its
+ * platform. It previously hid itself whenever no native prompt was available,
+ * which meant the feature was invisible on exactly the devices that need the
+ * instructions — iOS Safari included.
  */
 export function InstallApp({
   tone = "dark",
+  variant = "link",
   className,
 }: {
   tone?: "dark" | "light";
+  variant?: "link" | "button";
   className?: string;
 }) {
   const { t } = useI18n();
   const [prompt, setPrompt] = useState<InstallEvent | null>(null);
   const [installed, setInstalled] = useState(false);
-  const [ios, setIos] = useState(false);
+  const [platform, setPlatform] = useState<Platform>("desktop");
   const [panel, setPanel] = useState(false);
 
   useEffect(() => {
     setInstalled(isStandalone());
-    setIos(isIosSafari());
+    setPlatform(detect());
     const onPrompt = (e: Event) => {
       e.preventDefault();
       setPrompt(e as InstallEvent);
@@ -57,7 +68,6 @@ export function InstallApp({
   }, []);
 
   if (installed) return null;
-  if (!prompt && !ios) return null;
 
   const click = () => {
     if (prompt) {
@@ -67,14 +77,28 @@ export function InstallApp({
     setPanel(true);
   };
 
+  const steps =
+    platform === "ios"
+      ? [t.pwa.iosStep1, t.pwa.iosStep2, t.pwa.iosStep3]
+      : [t.pwa.androidStep1, t.pwa.androidStep2, t.pwa.androidStep3];
+
   return (
     <>
       <button
         type="button"
         onClick={click}
         className={cn(
-          "eyebrow line-hover text-left",
-          tone === "light" ? "text-ivory/70" : "text-charcoal/70",
+          variant === "button"
+            ? cn(
+                "eyebrow inline-flex min-h-[3.25rem] items-center justify-center px-7 py-4 transition-colors",
+                tone === "light"
+                  ? "bg-ivory text-charcoal hover:bg-cream"
+                  : "bg-charcoal text-ivory hover:bg-ink",
+              )
+            : cn(
+                "eyebrow line-hover text-left",
+                tone === "light" ? "text-ivory/70" : "text-charcoal/70",
+              ),
           className,
         )}
       >
@@ -85,10 +109,13 @@ export function InstallApp({
         <div className="fixed inset-0 z-[60] flex items-end justify-center bg-ink/60 p-4 backdrop-blur-sm md:items-center">
           <div className="w-full max-w-sm bg-ivory p-7 text-charcoal">
             <p className="display text-3xl">{t.pwa.iosTitle}</p>
+            <p className="mt-3 text-sm text-warmgrey">{t.pwa.addLead}</p>
             <ol className="mt-6 space-y-4 text-sm leading-relaxed text-warmgrey">
-              <li>1 · {t.pwa.iosStep1}</li>
-              <li>2 · {t.pwa.iosStep2}</li>
-              <li>3 · {t.pwa.iosStep3}</li>
+              {steps.map((step, i) => (
+                <li key={i}>
+                  {i + 1} · {step}
+                </li>
+              ))}
             </ol>
             <button
               type="button"

@@ -118,7 +118,7 @@ export function Header() {
             ))}
           </nav>
           <div className="mt-auto flex flex-col gap-3 border-t border-ivory/15 pt-6">
-            <InstallApp tone="light" className="py-2" />
+            <InstallApp variant="button" tone="light" className="w-full" />
             <a
               href={whatsappUrl(t.location.whatsappMessage)}
               target="_blank"
