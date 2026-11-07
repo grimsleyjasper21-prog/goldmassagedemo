@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { MapPin, MessageCircle } from "lucide-react";
+import { MessageCircle, Phone } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
-import { directionsUrl, whatsappUrl } from "@/lib/business";
+import { BUSINESS, whatsappUrl } from "@/lib/business";
 
 export function MobileBar() {
   const { t } = useI18n();
@@ -21,13 +21,11 @@ export function MobileBar() {
           {t.nav.services}
         </Link>
         <a
-          href={directionsUrl}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={t.location.directions}
+          href={`tel:${BUSINESS.phoneDial}`}
+          aria-label={`${t.location.call} ${BUSINESS.phoneDisplay}`}
           className="flex min-h-14 w-14 items-center justify-center border-l border-border text-charcoal"
         >
-          <MapPin className="size-4" strokeWidth={1.5} />
+          <Phone className="size-4" strokeWidth={1.5} />
         </a>
         <a
           href={whatsappUrl(t.location.whatsappMessage)}

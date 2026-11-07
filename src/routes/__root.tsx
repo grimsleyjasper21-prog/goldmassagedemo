@@ -85,11 +85,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Gold Massage · Chiropractic & massage in S'Arenal, Mallorca" },
+      { title: "Gold Massage · Chiromassage & wellness in S'Arenal, Mallorca" },
       {
         name: "description",
         content:
-          "Professional chiropractic and massage studio in S'Arenal, Playa de Palma, Mallorca. By appointment only. Book online.",
+          "Professional chiromassage and wellness studio in S'Arenal, Playa de Palma, Mallorca. By appointment only. Book online.",
       },
       { property: "og:site_name", content: "Gold Massage" },
       { property: "og:type", content: "website" },

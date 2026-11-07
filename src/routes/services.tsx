@@ -11,13 +11,13 @@ export const Route = createFileRoute("/services")({
       {
         name: "description",
         content:
-          "Treatment menu at Gold Massage, S'Arenal: chiropractic, deep tissue, relaxation, sports massage and full-body rituals, with indicative durations and prices.",
+          "Treatment menu at Gold Massage, S'Arenal: relaxing, therapeutic and aesthetic treatments — lomi lomi, deep tissue, sport, lymphatic drainage, wood therapy and more, with indicative durations and prices.",
       },
       { property: "og:title", content: "Treatments & prices · Gold Massage, S'Arenal" },
       {
         property: "og:description",
         content:
-          "Chiropractic, relaxation, sports and ritual treatments in S'Arenal — the full menu.",
+          "Relaxing, therapeutic and aesthetic treatments in S'Arenal — the full menu.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

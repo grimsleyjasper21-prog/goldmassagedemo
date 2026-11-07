@@ -6,29 +6,28 @@ import { LocationSection } from "@/components/site/LocationSection";
 import { categoryDesc, categoryLabel, useI18n } from "@/lib/i18n";
 import { BUSINESS, whatsappUrl } from "@/lib/business";
 import { CATEGORY_ORDER, type CategoryId } from "@/lib/services";
-import heroImg from "@/assets/hero.jpg";
-import massageImg from "@/assets/massage.jpg";
-import bookingImg from "@/assets/booking.jpg";
-import silkImg from "@/assets/waxing.jpg";
-import studioImg from "@/assets/studio.jpg";
+import roomImg from "@/assets/room.jpg";
+import treatmentImg from "@/assets/treatment.jpg";
+import teamImg from "@/assets/team.jpg";
+import storefrontImg from "@/assets/storefront.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Gold Massage · Chiropractic & massage in S'Arenal, Mallorca" },
+      { title: "Gold Massage · Chiromassage & wellness in S'Arenal, Mallorca" },
       {
         name: "description",
         content:
-          "Professional chiropractic and massage studio in S'Arenal, Playa de Palma. By appointment only. Book online, confirmation by WhatsApp.",
+          "Professional chiromassage and wellness studio in S'Arenal, Playa de Palma. By appointment only. Book online, confirmation by WhatsApp.",
       },
       {
         property: "og:title",
-        content: "Gold Massage · Chiropractic & massage · S'Arenal, Mallorca",
+        content: "Gold Massage · Chiromassage & wellness · S'Arenal, Mallorca",
       },
       {
         property: "og:description",
         content:
-          "Chiropractic, deep tissue, relaxation and sports massage in S'Arenal, Mallorca. Book online.",
+          "Lomi lomi, deep tissue, sport, lymphatic drainage and wood therapy in S'Arenal, Mallorca. Book online.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -40,10 +39,9 @@ export const Route = createFileRoute("/")({
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const CATEGORY_IMAGES: Record<CategoryId, string> = {
-  quiro: massageImg,
-  relax: heroImg,
-  deporte: bookingImg,
-  ritual: studioImg,
+  relax: roomImg,
+  terapeutico: treatmentImg,
+  estetico: teamImg,
 };
 
 /**
@@ -79,12 +77,14 @@ function Reveal({
 function Home() {
   const { t } = useI18n();
 
-  // Only researched information is published here. No telephone number and no
-  // opening hours are asserted — neither has been confirmed.
+  // Only researched information is published here. Telephone and address come
+  // from the studio's own signage; no opening hours are asserted because none
+  // are published.
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "HealthAndBeautyBusiness",
     name: BUSINESS.name,
+    telephone: BUSINESS.phoneDial,
     areaServed: { "@type": "Place", name: `${BUSINESS.city}, ${BUSINESS.region}` },
     address: {
       "@type": "PostalAddress",
@@ -108,7 +108,6 @@ function Home() {
       <Categories />
       <Feature />
       <Gallery />
-      <StudioNote />
       <AskBlock />
       <LocationSection />
       <FinalCta />
@@ -126,10 +125,10 @@ function Hero() {
   return (
     <section className="relative h-[92vh] min-h-[560px] overflow-hidden bg-charcoal md:h-screen">
       <img
-        src={heroImg}
-        alt="Massage table dressed in linen in warm Mediterranean light"
-        width={1600}
-        height={1920}
+        src={roomImg}
+        alt="Treatment room at Gold Massage with two massage tables"
+        width={1100}
+        height={1100}
         className="absolute inset-0 h-full w-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/20 to-ink/70" />
@@ -232,27 +231,29 @@ function Feature() {
   const { t } = useI18n();
   return (
     <section className="grid items-center gap-10 bg-ivory px-5 py-24 md:grid-cols-2 md:gap-16 md:px-10 md:py-32">
-      <Reveal className="h-[55vh] min-h-[340px] overflow-hidden md:h-[70vh]">
+      <Reveal className="h-[48vh] min-h-[300px] overflow-hidden md:h-[62vh]">
         <img
-          src={silkImg}
-          alt="Soft ivory silk folds on warm stone"
+          src={teamImg}
+          alt="The Gold Massage team at the studio"
           loading="lazy"
-          width={1408}
-          height={1760}
+          width={849}
+          height={500}
           className="h-full w-full object-cover"
         />
       </Reveal>
       <Reveal delay={0.08}>
-        <p className="eyebrow text-clay">{t.cats.ritual}</p>
-        <h2 className="display mt-5 text-[clamp(2.5rem,8vw,6rem)] uppercase leading-[0.95]">
-          {t.scenes.clean}
-          <br />
-          <span className="text-warmgrey">{t.scenes.cleanSmooth}</span>
+        <p className="eyebrow text-clay">{t.hero.place}</p>
+        <h2 className="display mt-5 text-[clamp(2.5rem,7vw,5rem)] uppercase leading-[0.95]">
+          {t.about.title}
         </h2>
-        <p className="body-copy mt-6 max-w-sm">{t.cats.ritualDesc}</p>
+        <p className="mt-6 max-w-md text-lg leading-relaxed text-charcoal md:text-xl">
+          {t.about.body}
+        </p>
+        <p className="mt-6 text-sm text-warmgrey">{t.about.langs}</p>
+        <p className="mt-4 text-sm italic text-warmgrey">{t.services.couples}</p>
         <div className="mt-8">
-          <CtaLink to="/services" variant="outline">
-            {t.cats.view}
+          <CtaLink to="/about" variant="outline">
+            {t.nav.about}
           </CtaLink>
         </div>
       </Reveal>
@@ -275,55 +276,30 @@ function Gallery() {
         <div className="mt-14 grid grid-cols-12 gap-4 md:gap-6">
           <Reveal className="col-span-12 md:col-span-7">
             <img
-              src={studioImg}
-              alt="Folded towels and a bowl of treatment oil in warm afternoon light"
+              src={treatmentImg}
+              alt="A treatment in progress at Gold Massage"
               loading="lazy"
               className="h-[42vh] w-full object-cover md:h-[52vh]"
             />
           </Reveal>
           <Reveal delay={0.06} className="col-span-12 md:col-span-5">
             <img
-              src={bookingImg}
-              alt="Candlelit treatment room"
+              src={storefrontImg}
+              alt="The Gold Massage studio front on Carrer de Cannes"
               loading="lazy"
               className="h-[42vh] w-full object-cover md:h-[52vh]"
             />
           </Reveal>
           <Reveal delay={0.12} className="col-span-12">
             <img
-              src={massageImg}
-              alt="Treatment oil and warm stones on dark slate"
+              src={roomImg}
+              alt="Treatment room at Gold Massage"
               loading="lazy"
               className="h-[38vh] w-full object-cover md:h-[46vh]"
             />
           </Reveal>
         </div>
         <p className="mt-8 max-w-xl text-xs leading-relaxed text-warmgrey">{t.gallery.note}</p>
-      </div>
-    </section>
-  );
-}
-
-/* ---------------------------------------------------------- STUDIO NOTE */
-
-function StudioNote() {
-  const { t } = useI18n();
-  return (
-    <section className="border-t border-border bg-cream px-5 py-24 md:px-10 md:py-32">
-      <div className="mx-auto grid max-w-[1600px] gap-10 md:grid-cols-[1fr_1.2fr]">
-        <Reveal>
-          <h2 className="display text-[clamp(2.5rem,7vw,5rem)] uppercase">{t.about.title}</h2>
-        </Reveal>
-        <Reveal delay={0.08}>
-          <p className="text-xl leading-relaxed text-charcoal md:text-2xl">{t.about.body}</p>
-          <p className="mt-6 text-sm text-warmgrey">{t.about.langs}</p>
-          <p className="mt-6 text-sm italic text-warmgrey">{t.services.couples}</p>
-          <div className="mt-10">
-            <CtaLink to="/about" variant="outline">
-              {t.nav.about}
-            </CtaLink>
-          </div>
-        </Reveal>
       </div>
     </section>
   );
@@ -361,7 +337,7 @@ function FinalCta() {
   return (
     <section className="relative overflow-hidden bg-charcoal px-5 py-28 md:px-10 md:py-40">
       <img
-        src={heroImg}
+        src={roomImg}
         alt=""
         aria-hidden
         loading="lazy"

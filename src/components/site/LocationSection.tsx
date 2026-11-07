@@ -5,11 +5,9 @@ import { CtaAnchor } from "./Cta";
 /**
  * Contact block.
  *
- * The address and the appointment-only policy are researched facts. No
- * telephone number is shown: public listings carry two conflicting numbers
- * for this address, so contact runs through WhatsApp until the studio
- * confirms which is current. No opening hours are asserted either — none are
- * published anywhere.
+ * Address and telephone come from the studio's own shopfront signage. No
+ * opening hours are asserted — none are published anywhere, and the studio
+ * works by appointment.
  */
 export function LocationSection() {
   const { t } = useI18n();
@@ -53,6 +51,9 @@ export function LocationSection() {
           <div className="mt-10 flex flex-wrap gap-3">
             <CtaAnchor href={whatsappUrl(t.location.whatsappMessage)} variant="solid">
               {t.location.whatsapp}
+            </CtaAnchor>
+            <CtaAnchor href={`tel:${BUSINESS.phoneDial}`} external={false} variant="outline">
+              {t.location.call} · {BUSINESS.phoneDisplay}
             </CtaAnchor>
             <CtaAnchor href={directionsUrl} variant="outline">
               {t.location.directions}

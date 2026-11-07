@@ -20,7 +20,9 @@ export function Footer() {
           {BUSINESS.postal} {BUSINESS.city}
           <br />
           {BUSINESS.region}
-          <br />
+          <a href={`tel:${BUSINESS.phoneDial}`} className="mt-3 block text-ivory line-hover">
+            {BUSINESS.phoneDisplay}
+          </a>
           <span className="mt-4 block text-ivory/50">{t.location.byAppointment}</span>
         </address>
 

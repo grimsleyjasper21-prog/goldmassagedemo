@@ -1,20 +1,25 @@
 import type { Lang } from "./i18n";
 
 /**
- * ILLUSTRATIVE DEMO MENU.
+ * The studio's REAL treatment menu, transcribed from the service board in its
+ * own shopfront window (three headings: Relaxing and Energizing, Therapeutic,
+ * Aesthetic).
  *
- * The treatment TYPES reflect what the studio's public directory listing
- * describes (chiropractic work, relaxation massage, treatments for two).
- * The durations and prices are placeholder content for the demonstration —
- * they are NOT confirmed information from the business. Replace this array
- * with the real menu when it is supplied; nothing else needs to change.
+ * Treatment NAMES and CATEGORIES are therefore the studio's own. Durations and
+ * prices are NOT published anywhere and remain illustrative placeholders for
+ * the demonstration — the footer and the services page both say so. Replace
+ * the numbers when the studio supplies its tariff; nothing else changes.
+ *
+ * Two names on the board are partly obscured in the photograph and are left
+ * out rather than guessed: one under Relaxing beginning "Massage in the w…",
+ * and the full wording of "Acupressure and trigger…".
  */
 export type Price =
   | { kind: "fixed"; amount: number }
   | { kind: "range"; from: number; to: number }
   | { kind: "duration"; options: { minutes: number; amount: number }[] };
 
-export type CategoryId = "quiro" | "relax" | "deporte" | "ritual";
+export type CategoryId = "relax" | "terapeutico" | "estetico";
 
 export type Service = {
   id: string;
@@ -23,7 +28,7 @@ export type Service = {
   price: Price;
 };
 
-export const CATEGORY_ORDER: CategoryId[] = ["quiro", "relax", "deporte", "ritual"];
+export const CATEGORY_ORDER: CategoryId[] = ["relax", "terapeutico", "estetico"];
 
 const d = (options: { minutes: number; amount: number }[]): Price => ({
   kind: "duration",
@@ -32,185 +37,108 @@ const d = (options: { minutes: number; amount: number }[]): Price => ({
 
 export const SERVICES: Service[] = [
   {
-    id: "quiropractica",
-    category: "quiro",
-    name: {
-      es: "Sesión quiropráctica",
-      en: "Chiropractic session",
-      de: "Chiropraktik-Sitzung",
-      sv: "Kiropraktisk behandling",
-    },
-    price: d([
-      { minutes: 30, amount: 45 },
-      { minutes: 45, amount: 60 },
-    ]),
-  },
-  {
-    id: "descontracturante",
-    category: "quiro",
-    name: {
-      es: "Masaje descontracturante",
-      en: "Deep tissue massage",
-      de: "Verspannungsmassage",
-      sv: "Djupgående massage",
-    },
-    price: d([
-      { minutes: 45, amount: 55 },
-      { minutes: 60, amount: 70 },
-      { minutes: 90, amount: 95 },
-    ]),
-  },
-  {
-    id: "espalda-cuello",
-    category: "quiro",
-    name: {
-      es: "Espalda, cuello y hombros",
-      en: "Back, neck and shoulders",
-      de: "Rücken, Nacken und Schultern",
-      sv: "Rygg, nacke och axlar",
-    },
-    price: d([
-      { minutes: 30, amount: 40 },
-      { minutes: 45, amount: 55 },
-    ]),
-  },
-
-  {
-    id: "relajante",
+    id: "lomi-lomi",
     category: "relax",
-    name: {
-      es: "Masaje relajante",
-      en: "Relaxing massage",
-      de: "Entspannungsmassage",
-      sv: "Avslappnande massage",
-    },
-    price: d([
-      { minutes: 60, amount: 65 },
-      { minutes: 90, amount: 90 },
-    ]),
+    name: { es: "Masaje lomi lomi", en: "Lomi lomi massage", de: "Lomi-Lomi-Massage", sv: "Lomi lomi-massage" },
+    price: d([{ minutes: 60, amount: 70 }, { minutes: 90, amount: 95 }]),
+  },
+  {
+    id: "anti-estres",
+    category: "relax",
+    name: { es: "Masaje antiestrés", en: "Anti-stress massage", de: "Anti-Stress-Massage", sv: "Antistressmassage" },
+    price: d([{ minutes: 60, amount: 65 }, { minutes: 90, amount: 90 }]),
+  },
+  {
+    id: "cuatro-manos",
+    category: "relax",
+    name: { es: "Masaje a cuatro manos", en: "Four hands massage", de: "Vier-Hände-Massage", sv: "Fyrhändig massage" },
+    price: d([{ minutes: 60, amount: 110 }, { minutes: 90, amount: 150 }]),
+  },
+  {
+    id: "bambu",
+    category: "relax",
+    name: { es: "Masaje con bambú", en: "Bamboo massage", de: "Bambus-Massage", sv: "Bambumassage" },
+    price: d([{ minutes: 60, amount: 70 }, { minutes: 90, amount: 95 }]),
   },
   {
     id: "aromaterapia",
     category: "relax",
-    name: {
-      es: "Masaje con aromaterapia",
-      en: "Aromatherapy massage",
-      de: "Aromatherapie-Massage",
-      sv: "Aromaterapimassage",
-    },
-    price: d([
-      { minutes: 60, amount: 70 },
-      { minutes: 90, amount: 95 },
-    ]),
+    name: { es: "Masaje con aromaterapia", en: "Massage with aromatherapy", de: "Massage mit Aromatherapie", sv: "Massage med aromaterapi" },
+    price: d([{ minutes: 60, amount: 70 }, { minutes: 90, amount: 95 }]),
   },
   {
-    id: "piedras",
+    id: "reiki",
     category: "relax",
-    name: {
-      es: "Masaje con piedras calientes",
-      en: "Hot stone massage",
-      de: "Hot-Stone-Massage",
-      sv: "Varm stenmassage",
-    },
-    price: d([{ minutes: 75, amount: 85 }]),
-  },
-  {
-    id: "craneofacial",
-    category: "relax",
-    name: {
-      es: "Craneofacial y cervical",
-      en: "Head, face and neck",
-      de: "Kopf, Gesicht und Nacken",
-      sv: "Huvud, ansikte och nacke",
-    },
-    price: d([
-      { minutes: 30, amount: 40 },
-      { minutes: 45, amount: 50 },
-    ]),
+    name: { es: "Reiki", en: "Reiki", de: "Reiki", sv: "Reiki" },
+    price: d([{ minutes: 45, amount: 55 }, { minutes: 60, amount: 70 }]),
   },
 
+  {
+    id: "tejido-profundo",
+    category: "terapeutico",
+    name: { es: "Masaje de tejido profundo", en: "Deep tissue massage", de: "Tiefengewebsmassage", sv: "Djupgående massage" },
+    price: d([{ minutes: 45, amount: 60 }, { minutes: 60, amount: 75 }, { minutes: 90, amount: 100 }]),
+  },
   {
     id: "deportivo",
-    category: "deporte",
-    name: {
-      es: "Masaje deportivo",
-      en: "Sports massage",
-      de: "Sportmassage",
-      sv: "Sportmassage",
-    },
-    price: d([
-      { minutes: 45, amount: 55 },
-      { minutes: 60, amount: 70 },
-      { minutes: 90, amount: 95 },
-    ]),
+    category: "terapeutico",
+    name: { es: "Masaje deportivo", en: "Sport massage", de: "Sportmassage", sv: "Sportmassage" },
+    price: d([{ minutes: 45, amount: 60 }, { minutes: 60, amount: 75 }, { minutes: 90, amount: 100 }]),
   },
   {
-    id: "estiramientos",
-    category: "deporte",
-    name: {
-      es: "Masaje con estiramientos",
-      en: "Massage with assisted stretching",
-      de: "Massage mit Dehnung",
-      sv: "Massage med stretching",
-    },
-    price: d([
-      { minutes: 60, amount: 70 },
-      { minutes: 90, amount: 95 },
-    ]),
+    id: "acupresion",
+    category: "terapeutico",
+    name: { es: "Acupresión y puntos gatillo", en: "Acupressure and trigger points", de: "Akupressur und Triggerpunkte", sv: "Akupressur och triggerpunkter" },
+    price: d([{ minutes: 45, amount: 60 }, { minutes: 60, amount: 75 }]),
   },
   {
-    id: "piernas",
-    category: "deporte",
-    name: {
-      es: "Piernas cansadas",
-      en: "Tired legs",
-      de: "Müde Beine",
-      sv: "Trötta ben",
-    },
-    price: d([
-      { minutes: 45, amount: 55 },
-      { minutes: 60, amount: 70 },
-    ]),
+    id: "vacumterapia",
+    category: "terapeutico",
+    name: { es: "Vacumterapia", en: "Vacuum therapy", de: "Vakuumtherapie", sv: "Vakuumterapi" },
+    price: d([{ minutes: 30, amount: 45 }, { minutes: 45, amount: 60 }]),
+  },
+  {
+    id: "reflexologia",
+    category: "terapeutico",
+    name: { es: "Reflexología", en: "Reflexology", de: "Reflexzonenmassage", sv: "Reflexologi" },
+    price: d([{ minutes: 30, amount: 45 }, { minutes: 45, amount: 55 }]),
+  },
+  {
+    id: "drenaje-linfatico",
+    category: "terapeutico",
+    name: { es: "Drenaje linfático", en: "Lymphatic drainage", de: "Lymphdrainage", sv: "Lymfdränage" },
+    price: d([{ minutes: 45, amount: 60 }, { minutes: 60, amount: 75 }]),
+  },
+  {
+    id: "silla-express",
+    category: "terapeutico",
+    name: { es: "Masaje express en silla", en: "Express chair massage", de: "Express-Stuhlmassage", sv: "Express stolmassage" },
+    price: d([{ minutes: 20, amount: 30 }, { minutes: 30, amount: 40 }]),
   },
 
   {
-    id: "ritual-cuerpo",
-    category: "ritual",
-    name: {
-      es: "Ritual completo de cuerpo",
-      en: "Full body ritual",
-      de: "Ganzkörper-Ritual",
-      sv: "Helkroppsritual",
-    },
-    price: d([
-      { minutes: 90, amount: 110 },
-      { minutes: 120, amount: 140 },
-    ]),
+    id: "anticelulitico",
+    category: "estetico",
+    name: { es: "Masaje anticelulítico", en: "Anti-cellulite massage", de: "Anti-Cellulite-Massage", sv: "Anticellulitmassage" },
+    price: d([{ minutes: 45, amount: 60 }, { minutes: 60, amount: 75 }]),
   },
   {
-    id: "reset",
-    category: "ritual",
-    name: {
-      es: "Sesión reset",
-      en: "Reset session",
-      de: "Reset-Session",
-      sv: "Reset-session",
-    },
-    price: d([
-      { minutes: 60, amount: 70 },
-      { minutes: 90, amount: 95 },
-    ]),
+    id: "reductor",
+    category: "estetico",
+    name: { es: "Masaje reductor", en: "Fat burning massage", de: "Fettverbrennungs-Massage", sv: "Fettförbrännande massage" },
+    price: d([{ minutes: 45, amount: 60 }, { minutes: 60, amount: 75 }]),
   },
   {
-    id: "express",
-    category: "ritual",
-    name: {
-      es: "Sesión express",
-      en: "Express session",
-      de: "Express-Session",
-      sv: "Expressbehandling",
-    },
-    price: d([{ minutes: 30, amount: 40 }]),
+    id: "maderoterapia",
+    category: "estetico",
+    name: { es: "Maderoterapia", en: "Wood therapy", de: "Holztherapie", sv: "Träterapi" },
+    price: d([{ minutes: 45, amount: 65 }, { minutes: 60, amount: 80 }]),
+  },
+  {
+    id: "rejuvenecedor",
+    category: "estetico",
+    name: { es: "Masaje rejuvenecedor", en: "Rejuvenation massage", de: "Verjüngungs-Massage", sv: "Föryngrande massage" },
+    price: d([{ minutes: 45, amount: 65 }, { minutes: 60, amount: 80 }]),
   },
 ];
 

@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { BookingFlow } from "@/components/site/BookingFlow";
 import { useI18n } from "@/lib/i18n";
-import bookingImg from "@/assets/booking.jpg";
+import treatmentImg from "@/assets/treatment.jpg";
 
 type BookSearch = { service?: string | undefined; minutes?: number | undefined };
 
@@ -38,7 +38,7 @@ function BookPage() {
     <>
       <div className="relative h-[52vh] min-h-[340px] overflow-hidden bg-charcoal md:h-[62vh]">
         <img
-          src={bookingImg}
+          src={treatmentImg}
           alt=""
           aria-hidden
           className="absolute inset-0 h-full w-full object-cover opacity-80"

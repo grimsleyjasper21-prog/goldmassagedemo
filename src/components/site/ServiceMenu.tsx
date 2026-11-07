@@ -14,7 +14,7 @@ import { CtaLink } from "./Cta";
 
 export function ServiceMenu() {
   const { t, lang } = useI18n();
-  const [active, setActive] = useState<CategoryId>("quiro");
+  const [active, setActive] = useState<CategoryId>("relax");
   const [openService, setOpenService] = useState<Service | null>(null);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
@@ -77,8 +77,8 @@ export function ServiceMenu() {
           >
             <div className="grid gap-10 md:grid-cols-[minmax(0,22rem)_1fr] md:gap-16">
               <div className="min-w-0 md:sticky md:top-52 md:self-start">
-                {/* Sized so the longest label in any language ("Quiropráctica",
-                    13 characters) still fits the 22rem column — at 7vw it ran
+                {/* Sized so the longest label in any language ("Terapéutico",
+                    11 characters) still fits the 22rem column — at 7vw it ran
                     straight over the service list on wide screens. */}
                 <h2 className="display overflow-hidden text-[clamp(1.875rem,3vw,2.625rem)] uppercase">
                   {categoryLabel(t, id)}

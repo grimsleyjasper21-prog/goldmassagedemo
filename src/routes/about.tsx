@@ -3,7 +3,7 @@ import { CtaLink } from "@/components/site/Cta";
 import { categoryDesc, categoryLabel, useI18n } from "@/lib/i18n";
 import { BUSINESS } from "@/lib/business";
 import { CATEGORY_ORDER } from "@/lib/services";
-import studioImg from "@/assets/studio.jpg";
+import storefrontImg from "@/assets/storefront.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "Gold Massage is a professional chiropractic and massage studio in S'Arenal, Mallorca. By appointment only.",
+          "Gold Massage is a professional chiromassage and wellness studio in S'Arenal, Mallorca. By appointment only.",
       },
       { property: "og:title", content: "The studio · Gold Massage, S'Arenal" },
       {
@@ -56,8 +56,8 @@ function AboutPage() {
         </div>
 
         <img
-          src={studioImg}
-          alt="Folded towels and a bowl of treatment oil in warm Mediterranean light"
+          src={storefrontImg}
+          alt="The Gold Massage studio front on Carrer de Cannes, S'Arenal"
           loading="lazy"
           width={1600}
           height={1104}

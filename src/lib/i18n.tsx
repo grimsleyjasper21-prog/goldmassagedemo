@@ -39,7 +39,7 @@ const es = {
     addLead: "Reserva tu próxima cita todavía más rápido.",
   },
   hero: {
-    eyebrow: "Quiropráctica · Masaje · S'Arenal",
+    eyebrow: "Quiromasaje · Bienestar · S'Arenal",
     place: "S'Arenal · Mallorca",
     tagline: "El cuerpo, de vuelta a su sitio.",
     book: "Reservar cita",
@@ -50,7 +50,7 @@ const es = {
     word1: "Suelta",
     word2: "La",
     word3: "Tensión.",
-    body: "Gold Massage es un estudio profesional en S'Arenal, a segunda línea de la playa. Trabajo quiropráctico y masaje, solo con cita previa.",
+    body: "Gold Massage es un estudio profesional en S'Arenal, a segunda línea de la playa. Quiromasaje y bienestar, solo con cita previa.",
     languages: "Reserva online, confirmación por WhatsApp.",
   },
   scenes: {
@@ -65,14 +65,12 @@ const es = {
     cleanSmooth: "ligero.",
   },
   cats: {
-    quiro: "Quiropráctica",
     relax: "Relajación",
-    deporte: "Deportivo",
-    ritual: "Rituales",
-    quiroDesc: "Sesión quiropráctica, masaje descontracturante y trabajo de espalda, cuello y hombros.",
-    relaxDesc: "Masaje relajante, aromaterapia, piedras calientes y trabajo craneofacial.",
-    deporteDesc: "Masaje deportivo, estiramientos asistidos y recuperación de piernas cansadas.",
-    ritualDesc: "Sesiones largas de cuerpo completo, sesión reset y formato express.",
+    terapeutico: "Terapéutico",
+    estetico: "Estético",
+    relaxDesc: "Lomi lomi, antiestrés, cuatro manos, bambú, aromaterapia y reiki.",
+    terapeuticoDesc: "Tejido profundo, deportivo, acupresión, vacumterapia, reflexología, drenaje linfático y masaje express en silla.",
+    esteticoDesc: "Anticelulítico, reductor, maderoterapia y masaje rejuvenecedor.",
     view: "Ver tratamientos",
   },
   services: {
@@ -146,7 +144,7 @@ const es = {
   },
   about: {
     title: "El estudio",
-    body: "Gold Massage es un estudio profesional de quiropráctica y masaje en S'Arenal, a segunda línea de la playa. Se trabaja únicamente con cita previa, en sesiones individuales y sin prisa.",
+    body: "Gold Massage es un estudio profesional de quiromasaje y bienestar en S'Arenal, a segunda línea de la playa. Se trabaja únicamente con cita previa, en sesiones individuales y sin prisa.",
     langs: "Reserva online · Confirmación por WhatsApp",
   },
   location: {
@@ -162,13 +160,12 @@ const es = {
     call: "Llamar",
     whatsapp: "WhatsApp",
     whatsappMessage: "Hola, tengo una pregunta sobre una cita en Gold Massage.",
-    accessNote:
-      "Se accede por el portal; no hay cartel visible desde la calle.",
+    accessNote: "Estudio a pie de calle, en segunda línea de playa.",
     availabilityNote:
       "El estudio trabaja solo con cita previa. El horario concreto se confirma al reservar.",
     days: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
   },
-  gallery: { title: "El", titleTwo: "espacio", note: "Imágenes orientativas de demostración. No corresponden a las instalaciones del estudio." },
+  gallery: { title: "El", titleTwo: "espacio", note: "Fotografías del estudio." },
   reviews: {
     title: "¿Alguna duda",
     titleTwo: "antes de reservar?",
@@ -183,12 +180,12 @@ const es = {
   },
   footer: { services: "Tratamientos", book: "Reservar", whatsapp: "WhatsApp", directions: "Cómo llegar" },
   seo: {
-    homeTitle: "Gold Massage · Quiropráctica y masaje en S'Arenal, Mallorca",
+    homeTitle: "Gold Massage · Quiromasaje y bienestar en S'Arenal, Mallorca",
     homeDesc:
-      "Estudio profesional de quiropráctica y masaje en S'Arenal, Playa de Palma. Solo con cita previa. Reserva online y confirmación por WhatsApp.",
+      "Estudio profesional de quiromasaje y bienestar en S'Arenal, Playa de Palma. Solo con cita previa. Reserva online y confirmación por WhatsApp.",
     servicesTitle: "Tratamientos y precios · Gold Massage S'Arenal",
     servicesDesc:
-      "Quiropráctica, masaje descontracturante, relajación, deportivo y rituales de cuerpo completo en S'Arenal, Mallorca.",
+      "Relajación, terapéutico y estético: lomi lomi, tejido profundo, deportivo, drenaje linfático, maderoterapia y más en S'Arenal.",
     bookTitle: "Reservar cita · Gold Massage S'Arenal",
     bookDesc:
       "Reserva tu cita en Gold Massage, S'Arenal. Elige tratamiento, duración, día y hora.",
@@ -219,7 +216,7 @@ const en: Dict = {
     addLead: "Book your next appointment even faster.",
   },
   hero: {
-    eyebrow: "Chiropractic · Massage · S'Arenal",
+    eyebrow: "Chiromassage · Wellness · S'Arenal",
     place: "S'Arenal · Mallorca",
     tagline: "Your body, back where it belongs.",
     book: "Book an appointment",
@@ -230,7 +227,7 @@ const en: Dict = {
     word1: "Release",
     word2: "The",
     word3: "Tension.",
-    body: "Gold Massage is a professional studio in S'Arenal, second row from the beach. Chiropractic work and massage, by appointment only.",
+    body: "Gold Massage is a professional studio in S'Arenal, second row from the beach. Chiromassage and wellness, by appointment only.",
     languages: "Book online, confirmation by WhatsApp.",
   },
   scenes: {
@@ -245,14 +242,12 @@ const en: Dict = {
     cleanSmooth: "lighter.",
   },
   cats: {
-    quiro: "Chiropractic",
-    relax: "Relaxation",
-    deporte: "Sports",
-    ritual: "Rituals",
-    quiroDesc: "Chiropractic sessions, deep tissue work, and back, neck and shoulder treatment.",
-    relaxDesc: "Relaxing massage, aromatherapy, hot stones and head, face and neck work.",
-    deporteDesc: "Sports massage, assisted stretching and recovery for tired legs.",
-    ritualDesc: "Long full-body sessions, a reset session and a short express format.",
+    relax: "Relaxing",
+    terapeutico: "Therapeutic",
+    estetico: "Aesthetic",
+    relaxDesc: "Lomi lomi, anti-stress, four hands, bamboo, aromatherapy and reiki.",
+    terapeuticoDesc: "Deep tissue, sport, acupressure, vacuum therapy, reflexology, lymphatic drainage and express chair massage.",
+    esteticoDesc: "Anti-cellulite, fat burning, wood therapy and rejuvenation massage.",
     view: "View treatments",
   },
   services: {
@@ -325,7 +320,7 @@ const en: Dict = {
   },
   about: {
     title: "The studio",
-    body: "Gold Massage is a professional chiropractic and massage studio in S'Arenal, second row from the beach. It works by appointment only, in unhurried one-to-one sessions.",
+    body: "Gold Massage is a professional chiromassage and wellness studio in S'Arenal, second row from the beach. It works by appointment only, in unhurried one-to-one sessions.",
     langs: "Book online · Confirmation by WhatsApp",
   },
   location: {
@@ -341,12 +336,12 @@ const en: Dict = {
     call: "Call",
     whatsapp: "WhatsApp",
     whatsappMessage: "Hello, I have a question about an appointment at Gold Massage.",
-    accessNote: "Entry is through the building door; there is no sign visible from the street.",
+    accessNote: "Street-level studio, second row from the beach.",
     availabilityNote:
       "The studio works by appointment only. Exact times are confirmed when you book.",
     days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
   },
-  gallery: { title: "The", titleTwo: "space", note: "Illustrative demo imagery. These are not the studio's own premises." },
+  gallery: { title: "The", titleTwo: "space", note: "Photographs of the studio." },
   reviews: {
     title: "Any questions",
     titleTwo: "before booking?",
@@ -361,12 +356,12 @@ const en: Dict = {
   },
   footer: { services: "Treatments", book: "Book", whatsapp: "WhatsApp", directions: "Directions" },
   seo: {
-    homeTitle: "Gold Massage · Chiropractic & massage in S'Arenal, Mallorca",
+    homeTitle: "Gold Massage · Chiromassage & wellness in S'Arenal, Mallorca",
     homeDesc:
-      "Professional chiropractic and massage studio in S'Arenal, Playa de Palma. By appointment only. Book online, confirmation by WhatsApp.",
+      "Professional chiromassage and wellness studio in S'Arenal, Playa de Palma. By appointment only. Book online, confirmation by WhatsApp.",
     servicesTitle: "Treatments & prices · Gold Massage S'Arenal",
     servicesDesc:
-      "Chiropractic, deep tissue, relaxation, sports massage and full-body rituals in S'Arenal, Mallorca.",
+      "Relaxing, therapeutic and aesthetic: lomi lomi, deep tissue, sport, lymphatic drainage, wood therapy and more in S'Arenal.",
     bookTitle: "Book an appointment · Gold Massage S'Arenal",
     bookDesc: "Book at Gold Massage, S'Arenal. Choose treatment, duration, day and time.",
   },
@@ -394,7 +389,7 @@ const de: Dict = {
     addLead: "Buche deinen nächsten Termin noch schneller.",
   },
   hero: {
-    eyebrow: "Chiropraktik · Massage · S'Arenal",
+    eyebrow: "Chiromassage · Wellness · S'Arenal",
     place: "S'Arenal · Mallorca",
     tagline: "Der Körper, wieder im Lot.",
     book: "Termin buchen",
@@ -405,7 +400,7 @@ const de: Dict = {
     word1: "Lass",
     word2: "Die",
     word3: "Spannung.",
-    body: "Gold Massage ist ein professionelles Studio in S'Arenal, in zweiter Reihe zum Strand. Chiropraktik und Massage, nur nach Vereinbarung.",
+    body: "Gold Massage ist ein professionelles Studio in S'Arenal, in zweiter Reihe zum Strand. Chiromassage und Wellness, nur nach Vereinbarung.",
     languages: "Online buchen, Bestätigung per WhatsApp.",
   },
   scenes: {
@@ -420,14 +415,12 @@ const de: Dict = {
     cleanSmooth: "leichter.",
   },
   cats: {
-    quiro: "Chiropraktik",
     relax: "Entspannung",
-    deporte: "Sport",
-    ritual: "Rituale",
-    quiroDesc: "Chiropraktik-Sitzungen, Verspannungsmassage und Arbeit an Rücken, Nacken und Schultern.",
-    relaxDesc: "Entspannungsmassage, Aromatherapie, Hot Stones und Kopf-, Gesichts- und Nackenarbeit.",
-    deporteDesc: "Sportmassage, assistiertes Dehnen und Regeneration für müde Beine.",
-    ritualDesc: "Lange Ganzkörper-Sessions, eine Reset-Session und ein kurzes Express-Format.",
+    terapeutico: "Therapeutisch",
+    estetico: "Ästhetik",
+    relaxDesc: "Lomi Lomi, Anti-Stress, vier Hände, Bambus, Aromatherapie und Reiki.",
+    terapeuticoDesc: "Tiefengewebe, Sport, Akupressur, Vakuumtherapie, Reflexzonen, Lymphdrainage und Express-Stuhlmassage.",
+    esteticoDesc: "Anti-Cellulite, Fettverbrennung, Holztherapie und Verjüngungs-Massage.",
     view: "Behandlungen ansehen",
   },
   services: {
@@ -500,7 +493,7 @@ const de: Dict = {
   },
   about: {
     title: "Das Studio",
-    body: "Gold Massage ist ein professionelles Chiropraktik- und Massagestudio in S'Arenal, in zweiter Reihe zum Strand. Gearbeitet wird ausschließlich nach Vereinbarung, in ruhigen Einzelsitzungen.",
+    body: "Gold Massage ist ein professionelles Chiromassage- und Wellnessstudio in S'Arenal, in zweiter Reihe zum Strand. Gearbeitet wird ausschließlich nach Vereinbarung, in ruhigen Einzelsitzungen.",
     langs: "Online buchen · Bestätigung per WhatsApp",
   },
   location: {
@@ -516,12 +509,12 @@ const de: Dict = {
     call: "Anrufen",
     whatsapp: "WhatsApp",
     whatsappMessage: "Hallo, ich habe eine Frage zu einem Termin bei Gold Massage.",
-    accessNote: "Der Zugang erfolgt über die Haustür; von der Straße aus ist kein Schild zu sehen.",
+    accessNote: "Studio auf Straßenebene, in zweiter Reihe zum Strand.",
     availabilityNote:
       "Das Studio arbeitet nur nach Vereinbarung. Die genauen Zeiten werden bei der Buchung bestätigt.",
     days: ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"],
   },
-  gallery: { title: "Der", titleTwo: "Raum", note: "Beispielbilder für die Demo. Sie zeigen nicht die Räume des Studios." },
+  gallery: { title: "Der", titleTwo: "Raum", note: "Aufnahmen aus dem Studio." },
   reviews: {
     title: "Noch Fragen",
     titleTwo: "vor der Buchung?",
@@ -536,12 +529,12 @@ const de: Dict = {
   },
   footer: { services: "Behandlungen", book: "Termin", whatsapp: "WhatsApp", directions: "Anfahrt" },
   seo: {
-    homeTitle: "Gold Massage · Chiropraktik & Massage in S'Arenal, Mallorca",
+    homeTitle: "Gold Massage · Chiromassage & Wellness in S'Arenal, Mallorca",
     homeDesc:
-      "Professionelles Chiropraktik- und Massagestudio in S'Arenal, Playa de Palma. Nur nach Vereinbarung. Online buchen, Bestätigung per WhatsApp.",
+      "Professionelles Chiromassage- und Wellnessstudio in S'Arenal, Playa de Palma. Nur nach Vereinbarung. Online buchen, Bestätigung per WhatsApp.",
     servicesTitle: "Behandlungen & Preise · Gold Massage S'Arenal",
     servicesDesc:
-      "Chiropraktik, Verspannungsmassage, Entspannung, Sportmassage und Ganzkörper-Rituale in S'Arenal, Mallorca.",
+      "Entspannung, Therapie und Ästhetik: Lomi Lomi, Tiefengewebe, Sport, Lymphdrainage, Holztherapie und mehr in S'Arenal.",
     bookTitle: "Termin buchen · Gold Massage S'Arenal",
     bookDesc: "Buche bei Gold Massage in S'Arenal. Behandlung, Dauer, Tag und Uhrzeit wählen.",
   },
@@ -569,7 +562,7 @@ const sv: Dict = {
     addLead: "Boka nästa tid ännu snabbare.",
   },
   hero: {
-    eyebrow: "Kiropraktik · Massage · S'Arenal",
+    eyebrow: "Kiromassage · Wellness · S'Arenal",
     place: "S'Arenal · Mallorca",
     tagline: "Kroppen, tillbaka på plats.",
     book: "Boka tid",
@@ -580,7 +573,7 @@ const sv: Dict = {
     word1: "Släpp",
     word2: "På",
     word3: "Spänning.",
-    body: "Gold Massage är en professionell studio i S'Arenal, andra raden från stranden. Kiropraktik och massage, endast efter tidsbokning.",
+    body: "Gold Massage är en professionell studio i S'Arenal, andra raden från stranden. Kiromassage och wellness, endast efter tidsbokning.",
     languages: "Boka online, bekräftelse via WhatsApp.",
   },
   scenes: {
@@ -595,14 +588,12 @@ const sv: Dict = {
     cleanSmooth: "lättare.",
   },
   cats: {
-    quiro: "Kiropraktik",
     relax: "Avslappning",
-    deporte: "Sport",
-    ritual: "Ritualer",
-    quiroDesc: "Kiropraktiska behandlingar, djupgående massage och arbete med rygg, nacke och axlar.",
-    relaxDesc: "Avslappnande massage, aromaterapi, varma stenar och arbete med huvud, ansikte och nacke.",
-    deporteDesc: "Sportmassage, assisterad stretching och återhämtning för trötta ben.",
-    ritualDesc: "Långa helkroppsbehandlingar, en reset-session och ett kort expressformat.",
+    terapeutico: "Terapeutisk",
+    estetico: "Estetisk",
+    relaxDesc: "Lomi lomi, antistress, fyrhändig, bambu, aromaterapi och reiki.",
+    terapeuticoDesc: "Djupgående, sport, akupressur, vakuumterapi, reflexologi, lymfdränage och express stolmassage.",
+    esteticoDesc: "Anticellulit, fettförbränning, träterapi och föryngrande massage.",
     view: "Se behandlingar",
   },
   services: {
@@ -675,7 +666,7 @@ const sv: Dict = {
   },
   about: {
     title: "Studion",
-    body: "Gold Massage är en professionell kiropraktik- och massagestudio i S'Arenal, andra raden från stranden. Arbetet sker endast efter tidsbokning, i lugna enskilda behandlingar.",
+    body: "Gold Massage är en professionell kiromassage- och wellnessstudio i S'Arenal, andra raden från stranden. Arbetet sker endast efter tidsbokning, i lugna enskilda behandlingar.",
     langs: "Boka online · Bekräftelse via WhatsApp",
   },
   location: {
@@ -691,12 +682,12 @@ const sv: Dict = {
     call: "Ring",
     whatsapp: "WhatsApp",
     whatsappMessage: "Hej, jag har en fråga om en tid hos Gold Massage.",
-    accessNote: "Ingång sker via porten; det finns ingen skylt synlig från gatan.",
+    accessNote: "Studio i gatuplan, andra raden från stranden.",
     availabilityNote:
       "Studion arbetar endast efter tidsbokning. Exakta tider bekräftas vid bokning.",
     days: ["Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag"],
   },
-  gallery: { title: "Våra", titleTwo: "rum", note: "Vägledande demobilder. De visar inte studions egna lokaler." },
+  gallery: { title: "Våra", titleTwo: "rum", note: "Bilder från studion." },
   reviews: {
     title: "Några frågor",
     titleTwo: "innan du bokar?",
@@ -711,12 +702,12 @@ const sv: Dict = {
   },
   footer: { services: "Behandlingar", book: "Boka", whatsapp: "WhatsApp", directions: "Vägbeskrivning" },
   seo: {
-    homeTitle: "Gold Massage · Kiropraktik och massage i S'Arenal, Mallorca",
+    homeTitle: "Gold Massage · Kiromassage och wellness i S'Arenal, Mallorca",
     homeDesc:
-      "Professionell kiropraktik- och massagestudio i S'Arenal, Playa de Palma. Endast efter tidsbokning. Boka online, bekräftelse via WhatsApp.",
+      "Professionell kiromassage- och wellnessstudio i S'Arenal, Playa de Palma. Endast efter tidsbokning. Boka online, bekräftelse via WhatsApp.",
     servicesTitle: "Behandlingar och priser · Gold Massage S'Arenal",
     servicesDesc:
-      "Kiropraktik, djupgående massage, avslappning, sportmassage och helkroppsritualer i S'Arenal, Mallorca.",
+      "Avslappning, terapeutisk och estetisk: lomi lomi, djupgående, sport, lymfdränage, träterapi med mera i S'Arenal.",
     bookTitle: "Boka tid · Gold Massage S'Arenal",
     bookDesc: "Boka hos Gold Massage i S'Arenal. Välj behandling, längd, dag och tid.",
   },
@@ -759,7 +750,7 @@ export function useI18n() {
   return useContext(LangContext);
 }
 
-type CatId = "quiro" | "relax" | "deporte" | "ritual";
+type CatId = "relax" | "terapeutico" | "estetico";
 
 export function categoryLabel(t: Dict, id: CatId) {
   return t.cats[id];
