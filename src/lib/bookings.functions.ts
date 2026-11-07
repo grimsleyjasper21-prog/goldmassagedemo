@@ -39,6 +39,17 @@ function newRef() {
   return `GM-${Math.floor(Date.now() / 1000)}`;
 }
 
+/**
+ * Fallback store, used ONLY when Google Calendar is not configured.
+ *
+ * These are real requests from real submissions — nothing is fabricated —
+ * but they live in the server instance's memory, so they do not survive a
+ * cold start and are not shared between instances. The dashboard says so
+ * plainly whenever this store is in use. Configure the Google credentials
+ * and the calendar becomes the store instead.
+ */
+const memoryStore = new Map<string, AdminBooking>();
+
 function requireAdmin(password: string) {
   const expected = process.env["ADMIN_PASSWORD"];
   if (!expected) throw new Error("ADMIN_PASSWORD is not set on this deployment.");
@@ -98,9 +109,24 @@ export const requestBooking = createServerFn({ method: "POST" })
 
     const cal = await import("./calendar.server");
     if (!cal.isCalendarConfigured()) {
-      // No calendar on this deployment: the request is still valid, and the
-      // confirmation screen hands it over on WhatsApp. Reported honestly so
-      // the UI never claims a diary entry that does not exist.
+      // No calendar on this deployment. Keep the request so the owner
+      // dashboard still receives it, and report calendarLinked: false so
+      // nothing claims a diary entry that does not exist.
+      memoryStore.set(ref, {
+        id: ref,
+        ref,
+        status: "pending",
+        service_name: data.service_name,
+        duration: data.duration,
+        people: data.people,
+        total: data.total,
+        date: data.date,
+        start_time: data.start_time,
+        end_time,
+        customer_name: data.customer_name,
+        customer_phone: data.customer_phone,
+        notes: data.notes,
+      });
       return { ok: true, ref, eventId: null, calendarLinked: false };
     }
 
@@ -138,7 +164,12 @@ export const adminList = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<{ configured: boolean; bookings: AdminBooking[] }> => {
     requireAdmin(data.password);
     const cal = await import("./calendar.server");
-    if (!cal.isCalendarConfigured()) return { configured: false, bookings: [] };
+    if (!cal.isCalendarConfigured()) {
+      const bookings = [...memoryStore.values()].sort((a, b) =>
+        `${a.date}${a.start_time}`.localeCompare(`${b.date}${b.start_time}`),
+      );
+      return { configured: false, bookings };
+    }
     const bookings = await cal.listBookings();
     return { configured: true, bookings };
   });
@@ -151,6 +182,13 @@ export const adminSetStatus = createServerFn({ method: "POST" })
     }): Promise<{ ok: true; booking: AdminBooking } | { ok: false; reason: string }> => {
       requireAdmin(data.password);
       const cal = await import("./calendar.server");
+      if (!cal.isCalendarConfigured()) {
+        const existing = memoryStore.get(data.id);
+        if (!existing) return { ok: false, reason: "That request is no longer in memory." };
+        const updated = { ...existing, status: data.status };
+        memoryStore.set(data.id, updated);
+        return { ok: true, booking: updated };
+      }
       try {
         const booking = await cal.setStatus(data.id, data.status);
         return { ok: true, booking };

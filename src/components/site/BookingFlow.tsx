@@ -50,6 +50,7 @@ export function BookingFlow({
   const [bookingId, setBookingId] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
+  const [calendarLinked, setCalendarLinked] = useState(true);
   const [slots, setSlots] = useState<string[] | null>(null);
   const [slotsLoading, setSlotsLoading] = useState(false);
 
@@ -190,6 +191,7 @@ export function BookingFlow({
       }
       setBookingId(res.ref);
       setBooking(draft);
+      setCalendarLinked(res.calendarLinked);
       go("done");
     } catch (err) {
       console.error("booking submit failed", err);
@@ -571,6 +573,11 @@ export function BookingFlow({
               <p className="mt-8 max-w-lg text-xs leading-relaxed text-warmgrey">
                 {t.book.doneNote}
               </p>
+              {!calendarLinked && (
+                <p className="mt-3 max-w-lg text-xs leading-relaxed text-clay">
+                  {t.book.noCalendarNote}
+                </p>
+              )}
               <div className="mt-8 flex flex-wrap gap-3">
                 <CtaAnchor
                   href={whatsappUrl(requestMessage(booking, bookingId ?? ""))}

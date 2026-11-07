@@ -137,6 +137,8 @@ const es = {
     phoneError: "Introduce un teléfono válido.",
     doneNote:
       "La cita todavía no está confirmada. El estudio revisa la solicitud y te confirma el día y la hora por WhatsApp, al número que has indicado.",
+    noCalendarNote:
+      "Demostración: esta solicitud aún no se ha escrito en la agenda del estudio. Envíala por WhatsApp para que quede registrada.",
     whatsappSend: "Escribir por WhatsApp",
     whatsappIntro: "Hola, acabo de enviar una solicitud de cita:",
     newBooking: "Nueva solicitud",
@@ -313,6 +315,8 @@ const en: Dict = {
     phoneError: "Please enter a valid phone number.",
     doneNote:
       "The appointment is not confirmed yet. The studio reviews the request and confirms the day and time by WhatsApp, on the number you gave.",
+    noCalendarNote:
+      "Demonstration: this request has not been written to the studio diary yet. Send it on WhatsApp so it is recorded.",
     whatsappSend: "Message on WhatsApp",
     whatsappIntro: "Hello, I have just sent an appointment request:",
     newBooking: "New request",
@@ -486,6 +490,8 @@ const de: Dict = {
     phoneError: "Bitte gib eine gültige Telefonnummer ein.",
     doneNote:
       "Der Termin ist noch nicht bestätigt. Das Studio prüft die Anfrage und bestätigt Tag und Uhrzeit per WhatsApp an die angegebene Nummer.",
+    noCalendarNote:
+      "Demonstration: diese Anfrage steht noch nicht im Kalender des Studios. Sende sie per WhatsApp, damit sie erfasst wird.",
     whatsappSend: "Über WhatsApp schreiben",
     whatsappIntro: "Hallo, ich habe gerade eine Terminanfrage gesendet:",
     newBooking: "Neue Anfrage",
@@ -659,6 +665,8 @@ const sv: Dict = {
     phoneError: "Ange ett giltigt telefonnummer.",
     doneNote:
       "Tiden är ännu inte bekräftad. Studion går igenom förfrågan och bekräftar dag och tid via WhatsApp, till numret du angav.",
+    noCalendarNote:
+      "Demonstration: förfrågan är ännu inte införd i studions kalender. Skicka den via WhatsApp så att den registreras.",
     whatsappSend: "Skriv på WhatsApp",
     whatsappIntro: "Hej, jag har precis skickat en bokningsförfrågan:",
     newBooking: "Ny förfrågan",

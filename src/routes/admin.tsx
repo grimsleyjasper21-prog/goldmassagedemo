@@ -173,9 +173,11 @@ function AdminPage() {
 
         {!configured && (
           <p className="mt-6 border border-clay/40 bg-cream px-5 py-4 text-sm leading-relaxed text-charcoal">
-            El calendario de Google todavía no está conectado en este despliegue, así que no hay
-            reservas que mostrar. Añade <code>GOOGLE_SA_EMAIL</code>, <code>GOOGLE_SA_PRIVATE_KEY</code>{" "}
-            y <code>GOOGLE_CALENDAR_ID</code> en las variables de entorno.
+            <strong className="font-normal text-clay">Calendario de Google no conectado.</strong>{" "}
+            Las solicitudes que ves abajo son reales, pero se guardan solo en memoria del servidor:
+            no se escriben en ningún calendario y se pierden al reiniciarse. Añade{" "}
+            <code>GOOGLE_SA_EMAIL</code> y <code>GOOGLE_SA_PRIVATE_KEY</code> en las variables de
+            entorno de Vercel para que cada cita confirmada aparezca en el calendario.
           </p>
         )}
 
