@@ -76,8 +76,11 @@ export function ServiceMenu() {
             className="scroll-mt-40 border-t border-border py-14 first:border-t-0 md:py-20"
           >
             <div className="grid gap-10 md:grid-cols-[minmax(0,22rem)_1fr] md:gap-16">
-              <div className="md:sticky md:top-52 md:self-start">
-                <h2 className="display text-[clamp(3rem,7vw,5.5rem)] uppercase">
+              <div className="min-w-0 md:sticky md:top-52 md:self-start">
+                {/* Sized so the longest label in any language ("Quiropráctica",
+                    13 characters) still fits the 22rem column — at 7vw it ran
+                    straight over the service list on wide screens. */}
+                <h2 className="display overflow-hidden text-[clamp(1.875rem,3vw,2.625rem)] uppercase">
                   {categoryLabel(t, id)}
                 </h2>
                 <p className="body-copy mt-4 max-w-sm text-sm">{categoryDesc(t, id)}</p>
