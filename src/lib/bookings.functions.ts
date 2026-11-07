@@ -107,6 +107,38 @@ export const requestBooking = createServerFn({ method: "POST" })
     const minutes = data.duration ?? 60;
     const end_time = addMinutes(data.start_time, minutes)!;
 
+    const record: AdminBooking = {
+      id: ref,
+      ref,
+      status: "pending",
+      service_name: data.service_name,
+      duration: data.duration,
+      people: data.people,
+      total: data.total,
+      date: data.date,
+      start_time: data.start_time,
+      end_time,
+      customer_name: data.customer_name,
+      customer_phone: data.customer_phone,
+      notes: data.notes,
+    };
+
+    // Apps Script first: it needs one URL and no Google Cloud setup at all.
+    const gas = await import("./appsscript.server");
+    if (gas.appsScriptUrl()) {
+      try {
+        await gas.createEvent(record);
+        memoryStore.set(ref, record);
+        return { ok: true, ref, eventId: null, calendarLinked: true };
+      } catch (err) {
+        return {
+          ok: false,
+          reason: "error",
+          message: err instanceof Error ? err.message : "Apps Script failed",
+        };
+      }
+    }
+
     const cal = await import("./calendar.server");
     if (!cal.isCalendarConfigured()) {
       // No calendar on this deployment. Keep the request so the owner
@@ -177,6 +209,10 @@ export const adminList = createServerFn({ method: "POST" })
       data,
     }): Promise<{ configured: boolean; bookings: AdminBooking[]; error?: string }> => {
       requireAdmin(data.password);
+      const gas = await import("./appsscript.server");
+      if (gas.appsScriptUrl()) {
+        return { configured: true, bookings: fromMemory() };
+      }
       const cal = await import("./calendar.server");
       if (!cal.isCalendarConfigured()) {
         return { configured: false, bookings: fromMemory() };
@@ -197,6 +233,21 @@ export const adminDiagnose = createServerFn({ method: "POST" })
   .validator((input: { password: string }) => input)
   .handler(async ({ data }) => {
     requireAdmin(data.password);
+    const gas = await import("./appsscript.server");
+    const url = gas.appsScriptUrl();
+    if (url) {
+      const res = await gas.ping();
+      return {
+        ok: res.ok,
+        headline: res.ok ? "Conectado por Apps Script" : "El Apps Script no responde",
+        detail: res.ok
+          ? `El script respondió correctamente. Las reservas se escriben en tu calendario. Respuesta: ${res.detail}`
+          : `No se pudo contactar con el script. Revisa que el despliegue sea "Ejecutar como: yo" y "Acceso: cualquier usuario". ${res.detail}`,
+        serviceAccount: null,
+        calendarId: url.replace(/^https:\/\/script\.google\.com/, "…"),
+        ...(res.ok ? {} : { raw: res.detail }),
+      };
+    }
     const cal = await import("./calendar.server");
     return cal.diagnose();
   });
@@ -208,6 +259,20 @@ export const adminSetStatus = createServerFn({ method: "POST" })
       data,
     }): Promise<{ ok: true; booking: AdminBooking } | { ok: false; reason: string }> => {
       requireAdmin(data.password);
+      const gas = await import("./appsscript.server");
+      if (gas.appsScriptUrl()) {
+        const existing = memoryStore.get(data.id);
+        if (!existing) return { ok: false, reason: "That request is no longer in memory." };
+        const updated = { ...existing, status: data.status };
+        memoryStore.set(data.id, updated);
+        // Older create-only scripts ignore this; that is not a failure.
+        try {
+          await gas.updateStatus(existing.ref, data.status);
+        } catch {
+          /* status still updated in the dashboard */
+        }
+        return { ok: true, booking: updated };
+      }
       const cal = await import("./calendar.server");
       if (!cal.isCalendarConfigured()) {
         const existing = memoryStore.get(data.id);
