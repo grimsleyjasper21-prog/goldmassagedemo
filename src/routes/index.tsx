@@ -200,13 +200,13 @@ function Categories() {
           {CATEGORY_ORDER.map((cat, i) => (
             <Reveal key={cat} delay={i * 0.06}>
               <Link to="/services" hash={cat} className="group block">
-                <div className="aspect-[4/5] overflow-hidden bg-ivory">
+                <div className="aspect-[4/3] overflow-hidden bg-ivory">
                   <img
                     src={CATEGORY_IMAGES[cat]}
                     alt=""
                     aria-hidden
                     loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
+                    className="h-full w-full object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
                   />
                 </div>
                 <h3 className="display mt-5 text-2xl uppercase text-charcoal md:text-3xl">
