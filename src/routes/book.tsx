@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import { BookingFlow } from "@/components/site/BookingFlow";
 import { useI18n } from "@/lib/i18n";
 import bookingImg from "@/assets/booking.jpg";
@@ -35,27 +34,22 @@ export const Route = createFileRoute("/book")({
 function BookPage() {
   const { t } = useI18n();
   const { service, minutes } = Route.useSearch();
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const scale = useTransform(scrollYProgress, [0, 1], [1.12, 1]);
-  const blur = useTransform(scrollYProgress, [0, 1], [10, 0]);
-  const filter = useTransform(blur, (b) => `blur(${b}px)`);
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-28%"]);
-
   return (
     <>
-      <div ref={heroRef} className="relative h-[80vh] overflow-hidden bg-charcoal md:h-screen">
-        <motion.img
+      <div className="relative h-[52vh] min-h-[340px] overflow-hidden bg-charcoal md:h-[62vh]">
+        <img
           src={bookingImg}
           alt=""
-          style={{ scale, filter }}
+          aria-hidden
           className="absolute inset-0 h-full w-full object-cover opacity-80"
           width={1600}
           height={1200}
         />
         <motion.div
-          style={{ y }}
-          className="relative flex h-full flex-col justify-end px-5 pb-16 text-ivory md:px-10 md:pb-24"
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="relative flex h-full flex-col justify-end px-5 pb-12 text-ivory md:px-10 md:pb-16"
         >
           <h1 className="display text-[clamp(3.25rem,12vw,10rem)] uppercase">
             {t.book.title}
