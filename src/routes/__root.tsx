@@ -40,12 +40,14 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
+// TanStack Router types `error` as unknown, so normalise before reporting.
+function ErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
+  const normalised = error instanceof Error ? error : new Error(String(error));
+  console.error(normalised);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
+    reportLovableError(normalised, { boundary: "tanstack_root_error_component" });
+  }, [normalised]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
