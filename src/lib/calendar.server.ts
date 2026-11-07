@@ -11,7 +11,8 @@
  *
  *   GOOGLE_SA_EMAIL        client_email from the service account JSON
  *   GOOGLE_SA_PRIVATE_KEY  private_key from the same JSON (\n escapes are fine)
- *   GOOGLE_CALENDAR_ID     the calendar's address (e.g. you@gmail.com)
+ *   GOOGLE_CALENDAR_ID     optional — the calendar's address. Defaults to
+ *                          DEFAULT_CALENDAR_ID below.
  *
  * Nothing here is ever imported by client code.
  */
@@ -23,6 +24,8 @@ const API = "https://www.googleapis.com/calendar/v3";
 const SCOPE = "https://www.googleapis.com/auth/calendar.events";
 /** Marks our events so listing never picks up the owner's private entries. */
 export const BOOKING_TAG = "goldMassageBooking";
+/** Used when GOOGLE_CALENDAR_ID is not set. Swap for the studio's own calendar. */
+const DEFAULT_CALENDAR_ID = "grimsleyjasper21@gmail.com";
 
 export class CalendarNotConfigured extends Error {
   constructor() {
@@ -34,7 +37,8 @@ export class CalendarNotConfigured extends Error {
 function config() {
   const email = process.env["GOOGLE_SA_EMAIL"];
   const key = process.env["GOOGLE_SA_PRIVATE_KEY"];
-  const calendarId = process.env["GOOGLE_CALENDAR_ID"];
+  // Defaults to the studio owner's own calendar; override per deployment.
+  const calendarId = process.env["GOOGLE_CALENDAR_ID"] ?? DEFAULT_CALENDAR_ID;
   if (!email || !key || !calendarId) return null;
   return { email, key: key.replace(/\\n/g, "\n"), calendarId };
 }

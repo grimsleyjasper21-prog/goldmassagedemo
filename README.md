@@ -32,12 +32,14 @@ TanStack Start · React 19 · Tailwind v4 · `motion/react` · Google Calendar.
 
 Copy `.env.example`. All four are set in Vercel → Settings → Environment Variables.
 
-| Variable | What it is |
-|---|---|
-| `GOOGLE_SA_EMAIL` | `client_email` from the service account JSON |
-| `GOOGLE_SA_PRIVATE_KEY` | `private_key` from the same JSON (keep the `\n` escapes) |
-| `GOOGLE_CALENDAR_ID` | the calendar's address, e.g. `you@gmail.com` |
-| `ADMIN_PASSWORD` | password for `/admin` |
+| Variable | Required | What it is |
+|---|---|---|
+| `GOOGLE_SA_EMAIL` | yes | `client_email` from the service account JSON |
+| `GOOGLE_SA_PRIVATE_KEY` | yes | `private_key` from the same JSON (keep the `\n` escapes) |
+| `ADMIN_PASSWORD` | yes | password for `/admin` |
+| `GOOGLE_CALENDAR_ID` | no | the calendar's address. Defaults to `DEFAULT_CALENDAR_ID` in `src/lib/calendar.server.ts` — change that constant when handing over to the studio. |
+
+`NITRO_PRESET` is **not** needed: `npm run build` sets the Vercel preset itself.
 
 Without them the site still runs: the booking flow works and hands over on
 WhatsApp, but no calendar events are written and `/admin` says so plainly.
@@ -92,8 +94,9 @@ The dashboard is Spanish only.
 ```sh
 npm install
 npm run dev
-NITRO_PRESET=vercel npm run build
+npm run build          # builds for Vercel, output in .vercel/output
+npm run build:cloudflare   # Nitro's default cloudflare-module preset
 ```
 
-Nitro defaults to the `cloudflare-module` preset, so **`NITRO_PRESET=vercel`
-is required** for Vercel; output lands in `.vercel/output`.
+Nitro defaults to `cloudflare-module`, which does not run on Vercel, so the
+`build` script pins `NITRO_PRESET=vercel`.
