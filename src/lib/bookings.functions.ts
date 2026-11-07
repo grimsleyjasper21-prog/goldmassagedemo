@@ -159,19 +159,46 @@ export const requestBooking = createServerFn({ method: "POST" })
     }
   });
 
+function fromMemory(): AdminBooking[] {
+  return [...memoryStore.values()].sort((a, b) =>
+    `${a.date}${a.start_time}`.localeCompare(`${b.date}${b.start_time}`),
+  );
+}
+
+/**
+ * Never throws on a calendar failure. The dashboard is where the owner finds
+ * out WHY Google is not working, so it has to load even when Google is
+ * broken — otherwise a bad credential locks them out of the diagnosis.
+ */
 export const adminList = createServerFn({ method: "POST" })
   .validator((input: { password: string }) => input)
-  .handler(async ({ data }): Promise<{ configured: boolean; bookings: AdminBooking[] }> => {
+  .handler(
+    async ({
+      data,
+    }): Promise<{ configured: boolean; bookings: AdminBooking[]; error?: string }> => {
+      requireAdmin(data.password);
+      const cal = await import("./calendar.server");
+      if (!cal.isCalendarConfigured()) {
+        return { configured: false, bookings: fromMemory() };
+      }
+      try {
+        return { configured: true, bookings: await cal.listBookings() };
+      } catch (err) {
+        return {
+          configured: true,
+          bookings: fromMemory(),
+          error: err instanceof Error ? err.message : "Calendar read failed.",
+        };
+      }
+    },
+  );
+
+export const adminDiagnose = createServerFn({ method: "POST" })
+  .validator((input: { password: string }) => input)
+  .handler(async ({ data }) => {
     requireAdmin(data.password);
     const cal = await import("./calendar.server");
-    if (!cal.isCalendarConfigured()) {
-      const bookings = [...memoryStore.values()].sort((a, b) =>
-        `${a.date}${a.start_time}`.localeCompare(`${b.date}${b.start_time}`),
-      );
-      return { configured: false, bookings };
-    }
-    const bookings = await cal.listBookings();
-    return { configured: true, bookings };
+    return cal.diagnose();
   });
 
 export const adminSetStatus = createServerFn({ method: "POST" })

@@ -7,10 +7,17 @@
  *
  * Auth is a Google service account (no OAuth consent flow). The studio shares
  * its calendar with the service account's address, granting "Make changes to
- * events". Required environment variables:
+ * events".
  *
- *   GOOGLE_SA_EMAIL        client_email from the service account JSON
- *   GOOGLE_SA_PRIVATE_KEY  private_key from the same JSON (\n escapes are fine)
+ * Easiest setup — ONE variable, the whole downloaded key file pasted in:
+ *
+ *   GOOGLE_SERVICE_ACCOUNT_JSON   the entire service-account JSON
+ *
+ * Or the two fields separately, if you prefer:
+ *
+ *   GOOGLE_SA_EMAIL        client_email from that JSON
+ *   GOOGLE_SA_PRIVATE_KEY  private_key from it (\n escapes are fine)
+ *
  *   GOOGLE_CALENDAR_ID     optional — the calendar's address. Defaults to
  *                          DEFAULT_CALENDAR_ID below.
  *
@@ -34,13 +41,77 @@ export class CalendarNotConfigured extends Error {
   }
 }
 
+export type ConfigSource = "json" | "fields" | null;
+
+/**
+ * Reads credentials from either the whole-JSON variable or the two separate
+ * fields. Returns null when neither is usable, and never throws — a malformed
+ * JSON blob is reported by `configProblem()` rather than crashing a request.
+ */
 function config() {
-  const email = process.env["GOOGLE_SA_EMAIL"];
-  const key = process.env["GOOGLE_SA_PRIVATE_KEY"];
+  const blob = process.env["GOOGLE_SERVICE_ACCOUNT_JSON"]?.trim();
   // Defaults to the studio owner's own calendar; override per deployment.
   const calendarId = process.env["GOOGLE_CALENDAR_ID"] ?? DEFAULT_CALENDAR_ID;
-  if (!email || !key || !calendarId) return null;
-  return { email, key: key.replace(/\\n/g, "\n"), calendarId };
+
+  if (blob) {
+    try {
+      const parsed = JSON.parse(blob) as { client_email?: string; private_key?: string };
+      if (parsed.client_email && parsed.private_key) {
+        return {
+          email: parsed.client_email,
+          key: parsed.private_key.replace(/\\n/g, "\n"),
+          calendarId,
+          source: "json" as const,
+        };
+      }
+    } catch {
+      /* reported by configProblem() */
+    }
+  }
+
+  const email = process.env["GOOGLE_SA_EMAIL"];
+  const key = process.env["GOOGLE_SA_PRIVATE_KEY"];
+  if (email && key) {
+    return { email, key: key.replace(/\\n/g, "\n"), calendarId, source: "fields" as const };
+  }
+  return null;
+}
+
+/** A human-readable reason why the credentials are not usable, or null. */
+export function configProblem(): string | null {
+  const blob = process.env["GOOGLE_SERVICE_ACCOUNT_JSON"]?.trim();
+  if (blob) {
+    let parsed: { client_email?: string; private_key?: string };
+    try {
+      parsed = JSON.parse(blob) as typeof parsed;
+    } catch {
+      return "GOOGLE_SERVICE_ACCOUNT_JSON is set but is not valid JSON. Paste the whole key file, including the outer { }.";
+    }
+    if (!parsed.client_email) return "The JSON has no client_email field.";
+    if (!parsed.private_key) return "The JSON has no private_key field.";
+    return null;
+  }
+  const email = process.env["GOOGLE_SA_EMAIL"];
+  const key = process.env["GOOGLE_SA_PRIVATE_KEY"];
+  if (!email && !key) {
+    return "No credentials set. Add GOOGLE_SERVICE_ACCOUNT_JSON (the whole key file) in the Vercel environment variables.";
+  }
+  if (!email) return "GOOGLE_SA_PRIVATE_KEY is set but GOOGLE_SA_EMAIL is missing.";
+  if (!key) return "GOOGLE_SA_EMAIL is set but GOOGLE_SA_PRIVATE_KEY is missing.";
+  if (!key.includes("BEGIN PRIVATE KEY")) {
+    return "GOOGLE_SA_PRIVATE_KEY does not look like a key — it must include the -----BEGIN PRIVATE KEY----- line.";
+  }
+  return null;
+}
+
+/** Which calendar the credentials point at, for the diagnostics panel. */
+export function targetCalendarId() {
+  return process.env["GOOGLE_CALENDAR_ID"] ?? DEFAULT_CALENDAR_ID;
+}
+
+/** The service account address the calendar must be shared with. */
+export function serviceAccountEmail() {
+  return config()?.email ?? null;
 }
 
 export function isCalendarConfigured() {
@@ -112,17 +183,28 @@ async function call<T>(path: string, init: RequestInit & { query?: Record<string
   return (await res.json()) as T;
 }
 
-/** Local wall-clock time in Madrid -> RFC3339 with the correct offset. */
+/**
+ * Local wall-clock time in Madrid -> RFC3339 with the correct UTC offset.
+ *
+ * The offset is read twice: once at the naive instant, then again at the
+ * instant that offset implies. Without the second read, the hour that repeats
+ * when summer time ends resolves to the wrong side of the change.
+ */
 function rfc3339(date: string, time: string) {
   const [y, m, d] = date.split("-").map(Number);
   const [hh, mm] = time.split(":").map(Number);
-  // Resolve Madrid's UTC offset for that instant rather than assuming +01:00.
+
+  const offsetAt = (ms: number) => {
+    const asZone = new Date(new Date(ms).toLocaleString("en-US", { timeZone: BUSINESS.timezone }));
+    const asUtc = new Date(new Date(ms).toLocaleString("en-US", { timeZone: "UTC" }));
+    return Math.round((asZone.getTime() - asUtc.getTime()) / 60000);
+  };
+
   const guess = Date.UTC(y!, m! - 1, d!, hh!, mm!);
-  const asMadrid = new Date(
-    new Date(guess).toLocaleString("en-US", { timeZone: BUSINESS.timezone }),
-  );
-  const asUtc = new Date(new Date(guess).toLocaleString("en-US", { timeZone: "UTC" }));
-  const offsetMin = Math.round((asMadrid.getTime() - asUtc.getTime()) / 60000);
+  const first = offsetAt(guess);
+  const second = offsetAt(guess - first * 60000);
+  const offsetMin = second;
+
   const sign = offsetMin >= 0 ? "+" : "-";
   const abs = Math.abs(offsetMin);
   const off = `${sign}${String(Math.floor(abs / 60)).padStart(2, "0")}:${String(abs % 60).padStart(2, "0")}`;
@@ -327,4 +409,97 @@ export async function setStatus(
     },
   );
   return toBooking(patched) ?? { ...existing, status };
+}
+
+
+export type Diagnosis = {
+  ok: boolean;
+  /** Short status for the dashboard badge. */
+  headline: string;
+  /** What to do about it, in plain language. */
+  detail: string;
+  serviceAccount: string | null;
+  calendarId: string;
+  /** Google's own error text, when there was one. */
+  raw?: string;
+};
+
+/**
+ * End-to-end check of the Google connection, run from the dashboard.
+ *
+ * Tests the two things that actually go wrong, in order: whether the
+ * credentials authenticate at all, and whether the service account can
+ * actually see the target calendar (i.e. whether it was shared with it —
+ * the single most common mistake).
+ */
+export async function diagnose(): Promise<Diagnosis> {
+  const calendarId = targetCalendarId();
+  const problem = configProblem();
+  if (problem) {
+    return {
+      ok: false,
+      headline: "Credenciales no configuradas",
+      detail: problem,
+      serviceAccount: null,
+      calendarId,
+    };
+  }
+
+  const cfg = config()!;
+
+  let token: string;
+  try {
+    token = await accessToken();
+  } catch (err) {
+    const raw = err instanceof Error ? err.message : String(err);
+    let detail =
+      "Google rechazó las credenciales. Revisa que has pegado el archivo JSON completo y sin recortar.";
+    if (raw.includes("account not found")) {
+      detail =
+        "Google no encuentra esa cuenta de servicio. Comprueba el client_email, y que la Google Calendar API está activada en el proyecto.";
+    } else if (raw.includes("Invalid JWT Signature")) {
+      detail =
+        "La clave privada no corresponde a esa cuenta de servicio. Vuelve a descargar el JSON y pégalo entero.";
+    } else if (raw.includes("invalid_grant")) {
+      detail =
+        "Google rechazó la clave. Suele ser un private_key mal pegado: tiene que incluir las líneas BEGIN y END.";
+    }
+    return {
+      ok: false,
+      headline: "Las credenciales no autentican",
+      detail,
+      serviceAccount: cfg.email,
+      calendarId,
+      raw,
+    };
+  }
+
+  // Authenticated. Can it actually reach the calendar?
+  const res = await fetch(
+    `${API}/calendars/${encodeURIComponent(calendarId)}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  if (!res.ok) {
+    const raw = await res.text();
+    const detail =
+      res.status === 404
+        ? `La cuenta de servicio autentica pero no ve el calendario "${calendarId}". Abre Google Calendar, Configuración, ese calendario, "Compartir con determinadas personas", añade ${cfg.email} y dale "Hacer cambios en los eventos".`
+        : `Google respondió ${res.status} al leer el calendario.`;
+    return {
+      ok: false,
+      headline: "Autentica, pero no ve el calendario",
+      detail,
+      serviceAccount: cfg.email,
+      calendarId,
+      raw: raw.slice(0, 400),
+    };
+  }
+
+  return {
+    ok: true,
+    headline: "Conectado",
+    detail: `Las citas confirmadas se escribirán en "${calendarId}".`,
+    serviceAccount: cfg.email,
+    calendarId,
+  };
 }

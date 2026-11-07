@@ -1,7 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { adminList, adminSetStatus, type AdminBooking } from "@/lib/bookings.functions";
+import {
+  adminDiagnose,
+  adminList,
+  adminSetStatus,
+  type AdminBooking,
+} from "@/lib/bookings.functions";
 import { BUSINESS } from "@/lib/business";
 import { cn } from "@/lib/utils";
 
@@ -61,6 +66,19 @@ function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [diag, setDiag] = useState<Awaited<ReturnType<typeof adminDiagnose>> | null>(null);
+  const [diagBusy, setDiagBusy] = useState(false);
+
+  const runDiagnose = async (pw: string) => {
+    setDiagBusy(true);
+    try {
+      setDiag(await adminDiagnose({ data: { password: pw } }));
+    } catch {
+      setDiag(null);
+    } finally {
+      setDiagBusy(false);
+    }
+  };
 
   const load = useCallback(async (pw: string) => {
     setLoading(true);
@@ -69,8 +87,10 @@ function AdminPage() {
       const res = await adminList({ data: { password: pw } });
       setBookings(res.bookings);
       setConfigured(res.configured);
+      setError(res.error ?? null);
       setAuthed(true);
       window.sessionStorage.setItem(KEY, pw);
+      void runDiagnose(pw);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Error";
       setError(msg.includes("UNAUTHORISED") ? "Contraseña incorrecta." : msg);
@@ -170,6 +190,46 @@ function AdminPage() {
             {loading ? "Actualizando..." : "Actualizar"}
           </button>
         </header>
+
+        <section className="mt-6 border border-border bg-cream/60 px-5 py-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="eyebrow text-warmgrey">Google Calendar</p>
+            <button
+              type="button"
+              onClick={() => void runDiagnose(password)}
+              disabled={diagBusy}
+              className="eyebrow border border-border px-4 py-2 text-charcoal transition-colors hover:border-charcoal disabled:opacity-40"
+            >
+              {diagBusy ? "Probando..." : "Probar conexión"}
+            </button>
+          </div>
+          {diag && (
+            <div className="mt-3">
+              <p className={cn("text-base", diag.ok ? "text-charcoal" : "text-clay")}>
+                {diag.ok ? "✓ " : "✕ "}
+                {diag.headline}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-warmgrey">{diag.detail}</p>
+              {diag.serviceAccount && (
+                <p className="mt-3 break-all text-xs text-warmgrey">
+                  Cuenta de servicio: <code>{diag.serviceAccount}</code>
+                  <br />
+                  Calendario: <code>{diag.calendarId}</code>
+                </p>
+              )}
+              {diag.raw && (
+                <details className="mt-3">
+                  <summary className="eyebrow cursor-pointer text-warmgrey">
+                    Respuesta de Google
+                  </summary>
+                  <pre className="mt-2 overflow-x-auto whitespace-pre-wrap break-all text-xs text-warmgrey">
+                    {diag.raw}
+                  </pre>
+                </details>
+              )}
+            </div>
+          )}
+        </section>
 
         {!configured && (
           <p className="mt-6 border border-clay/40 bg-cream px-5 py-4 text-sm leading-relaxed text-charcoal">
